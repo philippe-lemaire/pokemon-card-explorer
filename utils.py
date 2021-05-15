@@ -18,9 +18,11 @@ def get_file_contents(filename):
 
 my_key = get_file_contents(api_file)
 headers = {'X-Api-Key': my_key}
-            
+
+
 def get_sets(query):
-    '''queries the sets and stores a list of all sets ids and card numbers'''
+    '''queries the sets and stores a 
+    list of all sets ids and card numbers'''
     params = {
         'q': query,
         'orderBy': 'releaseDate'
@@ -30,6 +32,7 @@ def get_sets(query):
     url = base_uri + endpoint
     response = requests.get(url, params=params, headers=headers).json()['data']
     return response
+
 
 def write_to_csv(items):
     '''writes a list of sets (as dicts) to a csv file in the data/ dir'''
