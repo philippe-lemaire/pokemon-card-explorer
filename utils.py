@@ -1,4 +1,8 @@
 import csv
+import requests
+api_file = 'api-key/key'
+
+base_uri = 'https://api.pokemontcg.io/v2/'
 
 def get_file_contents(filename):
     """ Given a filename,
@@ -12,12 +16,26 @@ def get_file_contents(filename):
     except FileNotFoundError:
         print("'%s' file not found" % filename)
 
+my_key = get_file_contents(api_file)
+headers = {'X-Api-Key': my_key}
+            
+def get_sets(query):
+    '''queries the sets and stores a list of all sets ids and card numbers'''
+    params = {
+        'q': query,
+        'orderBy': 'releaseDate'
+    }
 
-def write_csv(series, cards):
-    '''takes a pokemon series such as 'sun and moon' and a list of dicts representing cards
-    and write a csv file for it in the cards folder'''
-    with open(f"cards/{series}.csv", 'w') as csv_file:
-        writer = csv.DictWriter(csv_file, cards[2].keys())
+    endpoint = 'sets/'
+    url = base_uri + endpoint
+    response = requests.get(url, params=params, headers=headers).json()['data']
+    return response
+
+def write_sets(sets):
+    '''writes a list of sets (as dicts) to a csv file in the data/ dir'''
+    with open('data/sets.csv', 'w') as csv_file:
+        fieldnames = sets[0].keys()
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
-        for card in cards:
-            writer.writerow(card)
+        for row in sets:
+            writer.writerow(row)
