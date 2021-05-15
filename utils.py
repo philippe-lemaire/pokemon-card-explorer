@@ -31,11 +31,11 @@ def get_sets(query):
     response = requests.get(url, params=params, headers=headers).json()['data']
     return response
 
-def write_sets(sets):
+def write_to_csv(items):
     '''writes a list of sets (as dicts) to a csv file in the data/ dir'''
     with open('data/sets.csv', 'w') as csv_file:
-        fieldnames = sets[0].keys()
+        fieldnames = items[0].keys()
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
-        for row in sets:
+        for row in items:
             writer.writerow(row)
