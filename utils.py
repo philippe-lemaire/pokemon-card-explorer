@@ -21,14 +21,24 @@ headers = {'X-Api-Key': my_key}
 
 
 def get_sets(query):
-    '''queries the sets and stores a 
-    list of all sets ids and card numbers'''
+    '''queries the sets and stores a list of all sets'''
     params = {
         'q': query,
         'orderBy': 'releaseDate'
     }
-
     endpoint = 'sets/'
+    url = base_uri + endpoint
+    response = requests.get(url, params=params, headers=headers).json()['data']
+    return response
+
+
+def search_cards(query):
+    '''returns a list of cards (as dicts) based on the query'''
+    params = {
+        'q': query,
+        'orderBy': 'releaseDate'
+    }
+    endpoint = 'cards/'
     url = base_uri + endpoint
     response = requests.get(url, params=params, headers=headers).json()['data']
     return response
