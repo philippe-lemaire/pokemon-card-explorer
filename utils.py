@@ -33,7 +33,7 @@ def get_sets(query):
 
 def write_to_csv(items):
     '''writes a list of sets (as dicts) to a csv file in the data/ dir'''
-    with open('data/sets.csv', 'w') as csv_file:
+    with open(f'data/{items}.csv', 'w') as csv_file:
         fieldnames = items[0].keys()
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
