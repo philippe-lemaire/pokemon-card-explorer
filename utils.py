@@ -57,5 +57,6 @@ def write_to_csv(items):
 
 
 def save_search_to_csv(items, filename):
+    '''writes a search result list to data/filename.csv'''
     df = pd.DataFrame(items)
     df.to_csv(f'data/{filename}.csv', columns=df.columns)
