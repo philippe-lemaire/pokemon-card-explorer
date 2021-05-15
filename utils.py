@@ -1,5 +1,7 @@
 import csv
 import requests
+import pandas as pd
+
 api_file = 'api-key/key'
 
 base_uri = 'https://api.pokemontcg.io/v2/'
@@ -52,3 +54,8 @@ def write_to_csv(items):
         writer.writeheader()
         for row in items:
             writer.writerow(row)
+
+
+def save_search_to_csv(items, filename):
+    df = pd.DataFrame(items)
+    df.to_csv(f'data/{filename}.csv', columns=df.columns)
