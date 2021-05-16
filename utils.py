@@ -62,7 +62,7 @@ def save_search_to_csv(items, filename):
     df = pd.DataFrame(items)
     df.to_csv(path_or_buf=f'data/{filename}.csv', columns=df.columns, index=False)
     
-def download_cards_imgs(query):
+def download_cards_csv_and_img(query):
     card_list = search_cards(query)
     save_search_to_csv(card_list, query[7:])
     os.makedirs(f"data/img/{query[7:]}",exist_ok=True)
