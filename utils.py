@@ -64,6 +64,7 @@ def save_search_to_csv(items, filename):
     
 def download_cards_imgs(query):
     card_list = search_cards(query)
+    save_search_to_csv(card_list, query[7:])
     os.makedirs(f"data/img/{query[7:]}",exist_ok=True)
     for card in card_list:
         print(f"{card['name']} is being downloaded.")

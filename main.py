@@ -16,4 +16,4 @@ import utils
 #utils.download_cards_imgs('swsh45')
 
 #swsh45 = utils.search_cards('set.id:swsh45')
-utils.download_cards_imgs('set.id:swsh45sv')
+utils.download_cards_imgs('set.id:swsh2')
