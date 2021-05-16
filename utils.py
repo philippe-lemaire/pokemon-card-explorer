@@ -1,6 +1,7 @@
 import csv
 import requests
 import pandas as pd
+import os
 
 api_file = 'api-key/key'
 
@@ -60,3 +61,11 @@ def save_search_to_csv(items, filename):
     '''writes a search result list to data/filename.csv'''
     df = pd.DataFrame(items)
     df.to_csv(path_or_buf=f'data/{filename}.csv', columns=df.columns, index=False)
+    
+def download_cards_imgs(query):
+    card_list = search_cards(query)
+    os.makedirs(f"data/img/{query[7:]}",exist_ok=True)
+    for card in card_list:
+        print(f"{card['name']} is being downloaded.")
+        r = requests.get(url=card['images']['large'], headers=headers)
+        open(f"data/img/{query[7:]}/{card['set']['id']}-{card['id']}-{card['name']}.png", 'wb').write(r.content)
