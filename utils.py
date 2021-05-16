@@ -68,4 +68,4 @@ def download_cards_imgs(query):
     for card in card_list:
         print(f"{card['name']} is being downloaded.")
         r = requests.get(url=card['images']['large'], headers=headers)
-        open(f"data/img/{query[7:]}/{card['set']['id']}-{card['id']}-{card['name']}.png", 'wb').write(r.content)
+        open(f"data/img/{query[7:]}/{card['id']}-{card['name']}.png", 'wb').write(r.content)
