@@ -47,27 +47,18 @@ def search_cards(query):
     return response
 
 
-def write_to_csv(items):
-    '''writes a list of sets (as dicts) to a csv file in the data/ dir'''
-    with open(f'data/{items}.csv', 'w') as csv_file:
-        fieldnames = items[0].keys()
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        writer.writeheader()
-        for row in items:
-            writer.writerow(row)
-
-
-def save_search_to_csv(items, filename):
+def save_search_to_pickle(items, filename):
     '''writes a search result list to data/filename.csv'''
     df = pd.DataFrame(items)
-    df.to_csv(path_or_buf=f'data/{filename}.csv', columns=df.columns, index=False)
+    df.to_pickle(path=f'data/{filename}.pickle')
     
-def download_cards_csv_and_img(query):
+def download_cards(query, download_images=False):
     '''takes a query, fetches card data, saves it as csv, and fetches all the hi-res images'''
     card_list = search_cards(query)
-    save_search_to_csv(card_list, query[7:])
-    os.makedirs(f"data/img/{query[7:]}",exist_ok=True)
-    for card in card_list:
-        print(f"{card['name']} is being downloaded.")
-        r = requests.get(url=card['images']['large'], headers=headers)
-        open(f"data/img/{query[7:]}/{card['id']}-{card['name']}.png", 'wb').write(r.content)
+    save_search_to_pickle(card_list, query[7:])
+    if download_images:
+        os.makedirs(f"data/img/{query[7:]}",exist_ok=True)
+        for card in card_list:
+            print(f"{card['name']} is being downloaded.")
+            r = requests.get(url=card['images']['large'], headers=headers)
+            open(f"data/img/{query[7:]}/{card['id']}-{card['name']}.png", 'wb').write(r.content)
