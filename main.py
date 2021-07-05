@@ -1,6 +1,5 @@
 import utils
 
-sets = utils.get_sets("")
 # utils.write_to_csv(sets)
 
 # dragons = utils.search_cards('supertype:pokemon types:dragon')
@@ -19,6 +18,8 @@ sets = utils.get_sets("")
 # swsh45 = utils.search_cards('set.id:swsh45')
 # utils.download_cards_csv_and_img('set.id:sm115')
 
-sets = utils.get_sets("")
-for item in sets:
-    utils.download_cards("set.id:" + item["id"])
+if __name__ == "__main__":
+    sets = utils.get_sets("")
+
+    for item in sets:
+        utils.download_cards("set.id:" + item["id"], download_images=True)
