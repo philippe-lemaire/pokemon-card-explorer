@@ -48,15 +48,38 @@ def save_search_to_pickle(items, filename):
     df.to_pickle(path=f"data/{filename}.pickle")
 
 
+# def download_cards(query, download_images=False):
+#     """takes a query, fetches card data, saves it as pickle, and fetches all the hi-res images"""
+#     card_list = search_cards(query)
+#     save_search_to_pickle(card_list, query[7:])
+#     if download_images:
+#         os.makedirs(f"data/img/{query[7:]}", exist_ok=True)
+#         for card in card_list:
+#             print(f"{card['name']} is being downloaded.")
+#             r = requests.get(url=card["images"]["large"], headers=headers)
+#             open(f"data/img/{query[7:]}/{card['id']}-{card['name']}.png", "wb").write(
+#                 r.content
+#             )
+
+
 def download_cards(query, download_images=False):
     """takes a query, fetches card data, saves it as pickle, and fetches all the hi-res images"""
+    counter = 0
     card_list = search_cards(query)
     save_search_to_pickle(card_list, query[7:])
     if download_images:
-        os.makedirs(f"data/img/{query[7:]}", exist_ok=True)
         for card in card_list:
-            print(f"{card['name']} is being downloaded.")
-            r = requests.get(url=card["images"]["large"], headers=headers)
-            open(f"data/img/{query[7:]}/{card['id']}-{card['name']}.png", "wb").write(
-                r.content
-            )
+            if card["supertype"] == "Pokémon":
+                counter += 1
+                print(counter)
+                print(f"{card['name']} is being downloaded.")
+                r = requests.get(url=card["images"]["large"], headers=headers)
+                try:
+                    pokémon_num = card["nationalPokedexNumbers"][0]
+                    path = f"data/img/per_pokemon/{pokémon_num}"
+                    os.makedirs(path, exist_ok=True)
+                    open(f"{path}/{card['id']}-{card['name']}.png", "wb").write(
+                        r.content
+                    )
+                except:
+                    print(f"could not find pokemon number in {card['name']}")
